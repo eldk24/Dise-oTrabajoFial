@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Tienda de Ropa</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="auth-body">
+  <div class="auth-container">
+    <h2>Iniciar Sesión</h2>
+    <form method="POST" action="/login">
+      <input type="text" name="username" placeholder="Usuario" required>
+      <input type="password" name="password" placeholder="Contraseña" required>
+      <button type="submit">Entrar</button>
+    </form>
+    <p>¿No tienes cuenta? <a href="/register">Regístrate</a></p>
+  </div>
+  <% if (msg) { %>
+  <script>alert("<%= msg %>");</script>
+<% } %>
+
+</body>
+</html>
