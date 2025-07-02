@@ -11,24 +11,47 @@
 
     <form class="product-form" method="POST" action="/add-product">
       <input type="text" name="name" placeholder="Nombre del producto" required>
+      
+      <select name="category" required>
+        <option value="">-- Categoría --</option>
+        <option value="Polos">Polos</option>
+        <option value="Pantalones">Pantalones</option>
+        <option value="Camisas">Camisas</option>
+        <option value="Casacas">Casacas</option>
+        <option value="Blusas">Blusas</option>
+        <option value="Chompas">Chompas</option>
+        <option value="Poleras">Poleras</option>
+      </select>
+      
       <input type="number" name="price" step="0.01" placeholder="Precio" required>
       <input type="text" name="image" placeholder="URL de imagen" required>
+      
+      <select name="stock" required>
+        <option value="Disponible">Disponible</option>
+        <option value="Agotado">Agotado</option>
+      </select>
+
       <button>Agregar producto</button>
     </form>
 
-    <h2>Catálogo</h2>
-    <div class="product-grid">
-      <% products.forEach(p => { %>
-        <div class="product-card">
-          <img src="<%= p.image %>" alt="Producto">
-          <h3><%= p.name %></h3>
-          <p>S/. <%= p.price %></p>
-          <form method="POST" action="/delete-product/<%= p.id %>">
-            <button>Eliminar</button>
-          </form>
-        </div>
-      <% }) %>
-    </div>
+    <h2>Catálogo por categoría</h2>
+
+    <% Object.keys(productsByCategory).forEach(category => { %>
+      <h3><%= category %></h3>
+      <div class="product-grid">
+        <% productsByCategory[category].forEach(p => { %>
+          <div class="product-card">
+            <img src="<%= p.image %>" alt="Producto">
+            <h3><%= p.name %></h3>
+            <p>Precio: S/. <%= p.price %></p>
+            <p>Stock: <%= p.stock %></p>
+            <form method="POST" action="/delete-product/<%= p.id %>">
+              <button>Eliminar</button>
+            </form>
+          </div>
+        <% }) %>
+      </div>
+    <% }) %>
   </div>
 </body>
 </html>
