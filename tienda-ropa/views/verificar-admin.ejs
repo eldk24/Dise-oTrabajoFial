@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Verificar código admin</title>
+</head>
+<body>
+  <h2>Ingresa el código que se envió a tu correo</h2>
+  <form method="POST" action="/verificar-admin">
+    <input type="text" name="otp" placeholder="Código OTP" required>
+    <button type="submit">Verificar</button>
+  </form>
+
+  <% if (msg) { %>
+    <script>alert("<%= msg %>");</script>
+  <% } %>
+</body>
+</html>
