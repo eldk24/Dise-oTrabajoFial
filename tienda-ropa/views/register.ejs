@@ -3,21 +3,76 @@
 <head>
   <meta charset="UTF-8">
   <title>Registro</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #1e1e2f;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .auth-container {
+      background: #2c2f3a;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+    input, select, button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+    input, select {
+      background: #3a3f51;
+      color: white;
+    }
+    button {
+      background: #00c853;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #00b344;
+    }
+    a {
+      color: #90caf9;
+    }
+  </style>
 </head>
 <body>
-  <h2>Registro</h2>
-  <form method="POST" action="/register">
-    <input type="text" name="username" placeholder="Correo electrónico" required>
-    <input type="text" name="dni" placeholder="DNI" required pattern="[0-9]{8}">
-    <input type="password" name="password" placeholder="Contraseña" required minlength="8">
-    <select name="role" required>
-      <option value="">-- Rol --</option>
-      <option value="cliente">Cliente</option>
-      <option value="admin">Admin</option>
-    </select>
-    <button type="submit">Registrar</button>
-  </form>
-  <p>¿Ya tienes cuenta? <a href="/login">Iniciar sesión</a></p>
-  <% if (msg) { %><script>alert("<%= msg %>");</script><% } %>
+  <div class="auth-container">
+    <h2>Registro</h2>
+    <form method="POST" action="/register">
+      <input type="text" name="username" placeholder="Correo electrónico" required>
+      
+      <!-- DNI exactamente 8 dígitos -->
+      <input type="text" name="dni" placeholder="DNI (8 dígitos)" required pattern="^\d{8}$" title="El DNI debe tener exactamente 8 números.">
+      
+      <!-- Contraseña: mínimo 8 caracteres, al menos una letra y un número -->
+      <input type="password" name="password" placeholder="Contraseña (mín. 8, una letra y un número)" required 
+             pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+             title="Mínimo 8 caracteres, con al menos una letra y un número.">
+      
+      <select name="role" required>
+        <option value="">-- Selecciona tu rol --</option>
+        <option value="cliente">Cliente</option>
+        <option value="admin">Administrador</option>
+      </select>
+
+      <button type="submit">Registrar</button>
+    </form>
+    <p>¿Ya tienes cuenta? <a href="/login">Inicia sesión</a></p>
+  </div>
+
+  <% if (msg) { %>
+    <script>alert("<%= msg %>");</script>
+  <% } %>
 </body>
 </html>

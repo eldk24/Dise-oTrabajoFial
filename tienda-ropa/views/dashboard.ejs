@@ -2,86 +2,72 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Dashboard</title>
+  <title>Panel Admin</title>
   <link rel="stylesheet" href="/css/style.css">
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
       background: #1e1e2f;
-      margin: 0;
-      padding: 20px;
       color: #f1f1f1;
+      padding: 20px;
     }
 
     .dashboard-container {
       max-width: 1200px;
       margin: auto;
-      position: relative;
-    }
-
-    .logout-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: #ff7043;
-      color: #fff;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .logout-btn:hover {
-      background: #f4511e;
     }
 
     h1, h2, h3 {
       text-align: center;
-      color: #ffffff;
     }
 
-    /* Formulario */
+    .logout-btn {
+      float: right;
+      background: #ff5252;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    .logout-btn:hover {
+      background: #e53935;
+    }
+
     .product-form {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 15px;
       background: #2c2f3a;
-      padding: 25px;
+      padding: 20px;
       border-radius: 10px;
-      margin-bottom: 40px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      margin-bottom: 30px;
     }
 
-    .product-form input,
-    .product-form select,
-    .product-form button {
-      padding: 12px;
-      border-radius: 6px;
+    input, select, button {
+      padding: 10px;
+      border-radius: 5px;
       border: none;
-      font-size: 15px;
     }
 
-    .product-form input,
-    .product-form select {
-      background-color: #3a3f51;
-      color: #f1f1f1;
+    input, select {
+      background: #3a3f51;
+      color: white;
     }
 
-    .product-form button {
+    button {
       background: #00c853;
-      color: #fff;
+      color: white;
       font-weight: bold;
-      transition: background 0.3s;
-    }
-
-    .product-form button:hover {
-      background: #00b344;
       cursor: pointer;
     }
 
-    /* Catálogo */
+    button:hover {
+      background: #00b344;
+    }
+
     .product-grid {
       display: flex;
       flex-wrap: wrap;
@@ -91,70 +77,36 @@
 
     .product-card {
       background: #2c2f3a;
-      border-radius: 10px;
-      width: 220px;
       padding: 15px;
-      box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
       text-align: center;
-      transition: transform 0.2s;
-    }
-
-    .product-card:hover {
-      transform: scale(1.03);
+      width: 220px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
     }
 
     .product-card img {
-      max-width: 100%;
+      width: 100%;
       height: 160px;
       object-fit: cover;
       border-radius: 6px;
-      margin-bottom: 10px;
     }
 
-    .product-card h3 {
-      margin: 8px 0;
-      color: #ffffff;
-    }
-
-    .product-card p {
-      margin: 4px 0;
-      font-size: 14px;
-    }
-
-    .product-card form button {
+    .product-card button {
       background: #ff5252;
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 6px;
       margin-top: 10px;
-      transition: background 0.3s;
-    }
-
-    .product-card form button:hover {
-      background: #e53935;
-      cursor: pointer;
-    }
-
-    .stock-out {
-      color: #ff6e6e;
-      font-weight: bold;
     }
   </style>
 </head>
 <body>
   <div class="dashboard-container">
-
-    <!-- Botón de cerrar sesión -->
-    <form id="logoutForm" method="POST" action="/logout">
-      <button type="button" class="logout-btn" onclick="confirmLogout()">Cerrar sesión</button>
+    <form method="POST" action="/logout" onsubmit="return confirm('¿Estás seguro de cerrar sesión?')">
+      <button class="logout-btn">Cerrar sesión</button>
     </form>
 
-    <h1>Bienvenido, <%= user.username %> 👋</h1>
+    <h1>Bienvenido administrador, <%= user.username %></h1>
 
     <form class="product-form" method="POST" action="/add-product">
       <input type="text" name="name" placeholder="Nombre del producto" required>
-
       <select name="category" required>
         <option value="">-- Categoría --</option>
         <option value="Polos">Polos</option>
@@ -165,11 +117,9 @@
         <option value="Chompas">Chompas</option>
         <option value="Poleras">Poleras</option>
       </select>
-
       <input type="number" name="price" step="0.01" placeholder="Precio (S/.)" required>
       <input type="text" name="image" placeholder="URL de imagen" required>
-      <input type="number" name="stock" min="0" placeholder="Cantidad en stock" required>
-
+      <input type="number" name="stock" min="0" placeholder="Stock disponible" required>
       <button type="submit">Agregar producto</button>
     </form>
 
@@ -184,9 +134,7 @@
               <img src="<%= p.image %>" alt="<%= p.name %>">
               <h3><%= p.name %></h3>
               <p>Precio: S/. <%= p.price %></p>
-              <p class="<%= p.stock === 0 ? 'stock-out' : '' %>">
-                Stock: <%= p.stock %> unidades
-              </p>
+              <p>Stock: <%= p.stock %> unidades</p>
               <form method="POST" action="/delete-product/<%= p.id %>">
                 <button>Eliminar</button>
               </form>
@@ -196,16 +144,5 @@
       <% } %>
     <% }) %>
   </div>
-
-  <!-- Confirmación al cerrar sesión -->
-  <script>
-    function confirmLogout() {
-      if (confirm("¿Estás seguro de que deseas cerrar sesión?")) {
-        document.getElementById('logoutForm').submit();
-      }
-    }
-  </script>
-  <a href="/logout" onclick="return confirm('¿Seguro que deseas cerrar sesión?')" style="color:white; background:red; padding:10px; border-radius:5px;">Cerrar sesión</a>
-
 </body>
 </html>
